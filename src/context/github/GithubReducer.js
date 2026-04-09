@@ -1,3 +1,4 @@
+// The reducer function
 const githubReducer = (state, action) => {
     switch (action.type) {
         case 'GET_USERS':

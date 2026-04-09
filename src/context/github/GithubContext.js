@@ -7,14 +7,16 @@ const GITHUB_URL = 'https://api.github.com'
 // const GITHUB_TOKEN = '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'
 
 export const GithubProvider = ({ children }) => {
+    // Initial State defined
     const initialState = {
         users: [],
         loading: false,
     }
 
+    // Reducer function called and used
     const [state, dispatch] = useReducer(githubReducer, initialState)
-    // Set Loading function to change the value of Loading
 
+    // Set Loading function to change the value of Loading
     const setLoading = () => dispatch({ type: 'SET_LOADING' })
 
     //Search Users
