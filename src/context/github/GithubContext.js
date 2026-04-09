@@ -17,19 +17,29 @@ export const GithubProvider = ({ children }) => {
 
     const setLoading = () => dispatch({ type: 'SET_LOADING' })
 
-    //Get initial Users for TESTING PURPOSES ONLY
-    const fetchUsers = async () => {
+    //Search Users
+    const searchUsers = async (text) => {
         setLoading()
+        console.log(text)
+
         try {
-            const response = await fetch(`${GITHUB_URL}/users`)
-            const data = await response.json()
-            dispatch({ type: 'GET_USERS', payload: data })
+            const response = await fetch(`${GITHUB_URL}/search/users?q=${text}`)
+            const { items } = await response.json()
+            dispatch({ type: 'GET_USERS', payload: items })
         } catch (error) {}
     }
 
+    // Clear Users
+    const clearUsers = () => dispatch({ type: 'CLEAR_USERS' })
+
     return (
         <GithubContext.Provider
-            value={{ users: state.users, loading: state.loading, fetchUsers }}
+            value={{
+                users: state.users,
+                loading: state.loading,
+                searchUsers,
+                clearUsers,
+            }}
         >
             {children}
         </GithubContext.Provider>
