@@ -4,23 +4,29 @@ import githubReducer from './GithubReducer'
 const GithubContext = createContext()
 
 const GITHUB_URL = 'https://api.github.com'
-const GITHUB_TOKEN = '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'
+// const GITHUB_TOKEN = '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'
 
 export const GithubProvider = ({ children }) => {
     const initialState = {
         users: [],
-        loading: true,
+        loading: false,
     }
 
     const [state, dispatch] = useReducer(githubReducer, initialState)
+    // Set Loading function to change the value of Loading
 
+    const setLoading = () => dispatch({ type: 'SET_LOADING' })
+
+    //Get initial Users for TESTING PURPOSES ONLY
     const fetchUsers = async () => {
+        setLoading()
         try {
             const response = await fetch(`${GITHUB_URL}/users`)
             const data = await response.json()
             dispatch({ type: 'GET_USERS', payload: data })
         } catch (error) {}
     }
+
     return (
         <GithubContext.Provider
             value={{ users: state.users, loading: state.loading, fetchUsers }}
