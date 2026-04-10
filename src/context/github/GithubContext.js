@@ -10,6 +10,7 @@ export const GithubProvider = ({ children }) => {
     // Initial State defined
     const initialState = {
         users: [],
+        user: {},
         loading: false,
     }
 
@@ -31,6 +32,22 @@ export const GithubProvider = ({ children }) => {
         } catch (error) {}
     }
 
+    //Single User
+    const getUser = async (login) => {
+        setLoading()
+        console.log(login)
+
+        try {
+            const response = await fetch(`${GITHUB_URL}/users/${login}`)
+            if (response.status === 404) {
+                window.location = '/notfound'
+            } else {
+                const data = await response.json()
+                dispatch({ type: 'GET_USER', payload: data })
+            }
+        } catch (error) {}
+    }
+
     // Clear Users
     const clearUsers = () => dispatch({ type: 'CLEAR_USERS' })
 
@@ -38,9 +55,11 @@ export const GithubProvider = ({ children }) => {
         <GithubContext.Provider
             value={{
                 users: state.users,
+                user: state.user,
                 loading: state.loading,
                 searchUsers,
                 clearUsers,
+                getUser,
             }}
         >
             {children}
